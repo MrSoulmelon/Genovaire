@@ -49,7 +49,7 @@ const ApplicationsPage = () => {
             Applications
           </h2>
           <p className="mt-4 text-lg text-text/70">
-            Explore the diverse applications of BioSync's AI-driven digital twin technology across various therapeutic areas.
+            Explore the diverse applications of Genovaire's AI-driven digital twin technology across various therapeutic areas.
           </p>
         </div>
         

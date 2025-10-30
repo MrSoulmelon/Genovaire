@@ -415,6 +415,20 @@ img {
   height: auto;
 }
 
+/* Only show a single main scrollbar (page-level). Hide inner element scrollbars */
+body {
+  overflow-y: auto;
+}
+
+#root * {
+  scrollbar-width: none; /* Firefox */
+}
+
+#root *::-webkit-scrollbar {
+  width: 0; /* Chrome/Safari/Edge */
+  height: 0;
+}
+
 /* List styles */
 ul, ol {
   list-style: none;

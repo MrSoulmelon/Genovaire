@@ -103,11 +103,11 @@ const Header = ({ currentPage, setCurrentPage }) => {
 
     return (
         <header className={getHeaderStyle()}>
-            <nav className={currentPage === 'home' ? "container mx-auto flex items-center justify-between px-6 py-4" : "flex items-center gap-4 w-full justify-between px-6 py-4"}>
+            <nav className="container mx-auto flex items-center px-6 py-4 relative">
                 {/* Enhanced Logo */}
                 <button 
                     onClick={() => handleNavClick('home')}
-                    className="group flex items-center gap-3 transition-all duration-300 hover:scale-105"
+                    className="group flex items-center gap-3 transition-all duration-300 hover:scale-105 flex-shrink-0"
                 >
                     <div className="relative">
                         <svg className="h-8 w-8 text-primary transition-all duration-300 group-hover:text-accent" fill="none" viewBox="0 0 48 48">
@@ -116,12 +116,12 @@ const Header = ({ currentPage, setCurrentPage }) => {
                         <div className="absolute inset-0 bg-gradient-to-r from-primary to-accent rounded-full opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm" />
                     </div>
                     <h1 className="text-2xl font-display font-bold text-text-primary group-hover:text-primary transition-colors duration-300">
-                        BioSync
+                        Genovaire
                     </h1>
                 </button>
 
                 {/* Enhanced Desktop Navigation */}
-                <div className="hidden md:flex items-center gap-2 font-body">
+                <div className="hidden md:flex items-center gap-2 font-body mx-auto">
                     {navItems.map((item) => (
                         <button 
                             key={item.name}
@@ -151,16 +151,6 @@ const Header = ({ currentPage, setCurrentPage }) => {
                         </button>
                     ))}
                 </div>
-
-                {/* Enhanced Action Button */}
-                <button className={getButtonStyle()}>
-                    <span className="flex items-center gap-2">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                        </svg>
-                        {getButtonText()}
-                    </span>
-                </button>
 
                 {/* Enhanced Mobile Menu Button */}
                 <button 
@@ -202,12 +192,6 @@ const Header = ({ currentPage, setCurrentPage }) => {
                         ))}
                         
                         <div className="pt-4 border-t border-primary/20">
-                            <button className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-accent text-background rounded-lg hover:scale-105 transition-all duration-300">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                                {getButtonText()}
-                            </button>
                         </div>
                     </div>
                 </div>

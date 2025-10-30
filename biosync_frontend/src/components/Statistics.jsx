@@ -94,7 +94,7 @@ const Statistics = () => {
             <h3 className="font-display text-xl font-bold text-accent mb-4">
               Available Drugs
             </h3>
-            <div className="space-y-2 max-h-64 overflow-y-auto">
+            <div className="space-y-2">
               {Object.entries(stats.drug_distribution)
                 .sort(([,a], [,b]) => b - a)
                 .map(([drug, count]) => (

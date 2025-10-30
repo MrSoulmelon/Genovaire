@@ -12,7 +12,7 @@ const Technology = () => {
                 Our Technology
               </h1>
               <p className="text-lg text-text/80 max-w-3xl">
-                BioSync's AI-powered digital twins revolutionize drug response prediction, offering personalized treatment insights and accelerating medical advancements through a fusion of genomic data and predictive simulation.
+                Genovaire's AI-powered digital twins revolutionize drug response prediction, offering personalized treatment insights and accelerating medical advancements through a fusion of genomic data and predictive simulation.
               </p>
             </div>
             <div className="relative w-full h-[500px] rounded-xl overflow-hidden glassmorphism shadow-glow">

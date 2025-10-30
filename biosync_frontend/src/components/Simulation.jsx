@@ -285,62 +285,13 @@ const Simulation = () => {
                         <label className="block text-text-primary font-medium mb-4">
                             Select Drug
                         </label>
-
-                        {/* Enhanced Drug Search */}
-                        <div className="mb-4">
-                            <div className="relative">
-                                <input 
-                                    type="text"
-                                    value={drugSearchQuery}
-                                    onChange={(e) => setDrugSearchQuery(e.target.value)}
-                                    placeholder="Search drugs... (e.g., 'amox', 'ibu', 'para')"
-                                    className="w-full bg-background/50 border border-primary/30 rounded-lg px-4 py-3 pl-10 text-text-primary placeholder-text-secondary focus:border-primary focus:outline-none transition-all duration-300"
-                                />
-                                <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                                </svg>
-                            </div>
-                            <div className="flex items-center justify-between mt-2">
-                                <p className="text-sm text-text-secondary">
-                                    {filteredDrugs.length} of {availableDrugs.length} drugs found
-                                </p>
-                                {drugSearchQuery && (
-                                    <button 
-                                        onClick={() => setDrugSearchQuery('')}
-                                        className="text-xs text-accent hover:text-primary transition-colors"
-                                    >
-                                        Clear search
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Enhanced Drug Dropdown */}
-                        <div className="relative">
-                            <select 
-                                value={selectedDrug}
-                                onChange={(e) => setSelectedDrug(e.target.value)}
-                                className="w-full bg-background/50 border border-primary/30 rounded-lg px-4 py-3 text-text-primary focus:border-primary focus:outline-none transition-all duration-300 appearance-none cursor-pointer"
-                            >
-                                <option value="">Choose a drug...</option>
-                                {filteredDrugs.map((drug) => (
-                                    <option key={drug} value={drug}>{drug}</option>
-                                ))}
-                            </select>
-                            <svg className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-text-secondary pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-
-                        {filteredDrugs.length === 0 && drugSearchQuery && (
-                            <div className="mt-4 p-4 bg-red-500/10 border border-red-500/30 rounded-lg">
-                                <p className="text-red-400 text-sm">
-                                    No drugs found matching "{drugSearchQuery}"
-                                </p>
-                            </div>
-                        )}
-
-                        {/* Enhanced Prediction Button */}
+                        {/* Custom ComboBox */}
+                        <DrugComboBox 
+                            drugs={availableDrugs}
+                            value={selectedDrug}
+                            onChange={setSelectedDrug}
+                            loading={loading}
+                        />
                         <button 
                             onClick={handleSinglePrediction}
                             disabled={loading || !isValidSequence || !selectedDrug}
@@ -409,8 +360,8 @@ const Simulation = () => {
                 {prediction && simulationMode === 'single' && (
                     <div className="mb-8 p-6 bg-background/30 rounded-lg border border-primary/20 backdrop-blur-sm">
                         <div className="flex items-center gap-3 mb-6">
-                            <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
-                                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full flex items-center justify-center">
+                                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
@@ -436,7 +387,7 @@ const Simulation = () => {
                                     </div>
                                     
                                     <div className="text-center">
-                                        <div className="text-2xl font-bold text-text-primary mb-1">
+                                        <div className="text-6xl font-extrabold text-text-primary mb-2 leading-none">
                                             {prediction.prediction.adverse_probability}%
                                         </div>
                                         <div className="text-xs text-text-secondary mb-3">
@@ -514,6 +465,117 @@ const Simulation = () => {
             </div>
         </div>
 )
+}
+
+// ComboBox Component
+function DrugComboBox({ drugs, value, onChange, loading }) {
+  const [inputValue, setInputValue] = useState(value || '')
+  const [isOpen, setIsOpen] = useState(false)
+  const [highlightedIdx, setHighlightedIdx] = useState(-1)
+  const inputRef = useRef()
+  const listRef = useRef()
+
+  // Keep input value in sync with selected value
+  useEffect(() => {
+    setInputValue(value || '')
+  }, [value])
+
+  // Filter drugs by input
+  const filteredDrugs = drugs.filter(d => !inputValue || d.toLowerCase().includes(inputValue.toLowerCase()))
+
+  function handleInputChange(e) {
+    setInputValue(e.target.value)
+    setIsOpen(true)
+    setHighlightedIdx(-1)
+    if (!e.target.value) {
+      onChange('')
+    }
+  }
+
+  function handleSelect(drug) {
+    setInputValue(drug)
+    setIsOpen(false)
+    setHighlightedIdx(-1)
+    onChange(drug)
+  }
+
+  function handleInputFocus() {
+    setIsOpen(true)
+  }
+  function handleInputBlur(e) {
+    // Allow option click before closing
+    setTimeout(() => setIsOpen(false), 80)
+  }
+
+  function handleKeyDown(e) {
+    if (!isOpen && (e.key === 'ArrowDown' || e.key === 'Enter')) {
+      setIsOpen(true)
+      setHighlightedIdx(0)
+      return
+    }
+    if (e.key === 'ArrowDown') {
+      setHighlightedIdx(idx => Math.min(idx + 1, filteredDrugs.length - 1))
+    } else if (e.key === 'ArrowUp') {
+      setHighlightedIdx(idx => Math.max(idx - 1, 0))
+    } else if (e.key === 'Enter' && highlightedIdx >= 0 && filteredDrugs[highlightedIdx]) {
+      handleSelect(filteredDrugs[highlightedIdx])
+    } else if (e.key === 'Escape') {
+      setIsOpen(false)
+    }
+  }
+
+  return (
+    <div className="relative">
+      <input
+        ref={inputRef}
+        type="text"
+        autoComplete="off"
+        className="w-full bg-background/50 border border-primary/30 rounded-lg px-4 py-3 text-text-primary placeholder-text-secondary focus:border-primary focus:outline-none transition-all duration-300"
+        placeholder={loading ? 'Loading drugs...' : 'Start typing or select a drug...'}
+        value={inputValue}
+        onChange={handleInputChange}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
+        onKeyDown={handleKeyDown}
+        disabled={loading}
+        aria-autocomplete="list"
+        aria-controls="drug-dropdown"
+        aria-expanded={isOpen}
+      />
+      {/* Dropdown list */}
+      {isOpen && filteredDrugs.length > 0 && (
+        <ul
+          ref={listRef}
+          id="drug-dropdown"
+          className="z-40 absolute left-0 right-0 max-h-60 bg-background border border-primary/30 rounded-lg mt-2 overflow-auto shadow-lg"
+          style={{boxShadow: '0 8px 24px 0 rgba(140,82,255,0.13)'}}
+          role="listbox"
+        >
+          {filteredDrugs.map((drug, idx) => (
+            <li
+              key={drug}
+              className={`px-4 py-2 cursor-pointer transition-colors duration-150 ${
+                (value === drug ? 'bg-primary/10 text-primary font-semibold ' : '') +
+                (highlightedIdx === idx ? 'bg-accent/10 text-accent' : 'text-text-primary')
+              }`}
+              onMouseEnter={() => setHighlightedIdx(idx)}
+              onMouseDown={e => { e.preventDefault(); handleSelect(drug) }}
+              role="option"
+              aria-selected={value === drug}
+            >
+              {drug}
+            </li>
+          ))}
+        </ul>
+      )}
+      {/* Empty message */}
+      {isOpen && !loading && filteredDrugs.length === 0 && (
+        <div className="absolute left-0 right-0 mt-2 px-4 py-3 bg-background border border-primary/30 rounded-lg text-red-400 text-sm">
+          No drugs found
+        </div>
+      )}
+    </div>
+  )
 }
 
 export default Simulation

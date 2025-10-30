@@ -130,7 +130,7 @@ const Hero = ({ onNavigate }) => {
         {/* Animated subtitle */}
         <div className={`transform transition-all duration-1000 delay-300 ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
           <p className="mt-6 text-lg md:text-xl max-w-2xl mx-auto text-text-secondary">
-            BioSync creates <span className="text-accent font-semibold">digital replicas</span> of patients to predict drug responses with <span className="text-primary font-semibold">unprecedented precision</span>.
+            Genovaire creates <span className="text-accent font-semibold">digital replicas</span> of patients to predict drug responses with <span className="text-primary font-semibold">unprecedented precision</span>.
           </p>
         </div>
 

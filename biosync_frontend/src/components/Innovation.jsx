@@ -56,7 +56,7 @@ const Innovation = () => {
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-accent">Our Innovation</h2>
           </div>
           <p className="text-lg text-text-secondary max-w-3xl mx-auto">
-            BioSync leverages advanced AI and machine learning to create digital twins of patients. These twins simulate drug responses with <span className="text-accent font-semibold">unprecedented accuracy</span>, enabling personalized treatment plans and accelerating drug discovery.
+            Genovaire leverages advanced AI and machine learning to create digital twins of patients. These twins simulate drug responses with <span className="text-accent font-semibold">unprecedented accuracy</span>, enabling personalized treatment plans and accelerating drug discovery.
           </p>
         </div>
 
