@@ -1,4 +1,14 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+// Construct API URL - if VITE_API_URL is set, use it; otherwise default to localhost
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    // If URL doesn't end with /api, append it
+    return envUrl.endsWith('/api') ? envUrl : `${envUrl}/api`;
+  }
+  return 'http://localhost:5000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 class BioSyncAPI {
   async healthCheck() {

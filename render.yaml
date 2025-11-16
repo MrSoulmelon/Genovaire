@@ -1,0 +1,31 @@
+services:
+  # Backend Flask API Service
+  - type: web
+    name: biosync-backend
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r backend/biosync_backend/requirements.txt
+    startCommand: cd backend/biosync_backend && python app.py
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    healthCheckPath: /api/health
+
+  # Frontend React/Vite Static Site
+  - type: web
+    name: biosync-frontend
+    env: static
+    region: oregon
+    plan: starter
+    buildCommand: cd biosync_frontend && npm install && npm run build
+    staticPublishPath: biosync_frontend/dist
+    envVars:
+      - key: NODE_VERSION
+        value: 20.x
+      # IMPORTANT: After backend deploys, update VITE_API_URL with your actual backend URL
+      # Example: https://biosync-backend.onrender.com
+      # The /api will be appended automatically by the frontend code
+      - key: VITE_API_URL
+        value: https://biosync-backend.onrender.com
+
