@@ -136,6 +136,14 @@ const Innovation = () => {
             ))}
           </div>
         </div>
+
+        {/* Credits */}
+        <div className={`mt-16 text-center transform transition-all duration-1000 delay-[800ms] ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+          <p className="text-sm uppercase tracking-[0.3em] text-text-secondary mb-3">Credits</p>
+          <div className="text-lg font-medium text-text-primary">
+            Mayank Sharma · Megha Gupta · Ragini Rohit Chheda · Jiya Parkash
+          </div>
+        </div>
       </div>
     </section>
   )
